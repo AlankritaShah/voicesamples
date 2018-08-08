@@ -3,10 +3,13 @@ import android.content.Intent;
 import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,12 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SpeakersActivity extends AppCompatActivity implements View.OnClickListener{
+public class SpeakersActivity extends AppCompatActivity implements View.OnClickListener, SpeakersAdapter.SpeakersAdapterListener{
 
-    ListView listView;
+    RecyclerView listView;
     ArrayList<String> usersList = new ArrayList<>();
     // FloatingActionButton  speaker_image_Button=findViewById(R.id.speaker_image_Button);;
     DatabaseReference databaseReference;
+    static SpeakersAdapter.SpeakersAdapterListener speakersAdapterListener;
 
 
     @Override
@@ -41,10 +45,14 @@ public class SpeakersActivity extends AppCompatActivity implements View.OnClickL
 
       //  TextView userslistname = (TextView) findViewById(R.id.users_list_name);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.username,usersList);
+     //   ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.username,usersList);
 //        if(!usersList.isEmpty())
 //        userslistname.setText(usersList.get(arrayAdapter.getCount()));
+        speakersAdapterListener =this;
+        SpeakersAdapter arrayAdapter = new SpeakersAdapter(this, usersList, this);
+        listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(arrayAdapter);
+
 
         findViewById(R.id.speaker_image_Button).setOnClickListener(this);
 
@@ -64,7 +72,7 @@ public class SpeakersActivity extends AppCompatActivity implements View.OnClickL
                     Map someinfo = (Map) userinfo.get("UserInfo");
                     String somename = someinfo.get("user_name").toString();
                     usersList.add(somename);
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.username, usersList);
+                    listView.setAdapter(new SpeakersAdapter(getApplicationContext(), usersList, speakersAdapterListener));
 
                     Log.i("namedata", somename);
                 }
@@ -84,5 +92,11 @@ public class SpeakersActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(SpeakersActivity.this, AddSpeakers.class));
                 break;
         }
+    }
+
+    @Override
+    public void onSpeakerSelected(String filestr) {
+
+        Log.d("string form", filestr);
     }
 }

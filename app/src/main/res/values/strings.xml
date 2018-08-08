@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">VoiceSamples</string>
+
+    <array name="Lang">
+        <item>Hindi</item>
+        <item>Marwadi</item>
+        <item>Mewari</item>
+        <item>Gujrathi</item>
+        <item>English</item>
+        <item>Odia</item>
+        <item name="other_lang">Others</item>
+    </array>
+
+    <string-array name="Numbers" >
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+
+
+</resources>
